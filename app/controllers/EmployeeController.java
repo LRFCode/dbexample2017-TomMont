@@ -27,4 +27,12 @@ public class EmployeeController extends Controller
 
         return ok(views.html.employees.render(employees));
     }
+
+    @Transactional(readOnly = true)
+    public Result getEmployee(Integer id)
+    {
+        Employee employee =
+                jpaApi.em().createQuery("SELECT e FROM Employee e WHERE employeeId = :id", Employee.class).setParameter("id", id).getSingleResult();
+        return ok(views.html.employee.render(employee));
+    }
 }

@@ -19,6 +19,32 @@ public class Employee
     @Column(name = "FirstName")
     private String firstName;
 
+    @Column(name = "Title")
+    private String title;
+
+    @Column(name = "TitleOfCourtesy")
+    private String TitleOfCourtesy;
+
+    public String getTitleOfCourtesy()
+    {
+        return TitleOfCourtesy;
+    }
+
+    public void setTitleOfCourtesy(String titleOfCourtesy)
+    {
+        this.TitleOfCourtesy = titleOfCourtesy;
+    }
+
+    public String getTitle()
+    {
+        return title;
+    }
+
+    public void setTitle(String title)
+    {
+        this.title = title;
+    }
+
     public int getEmployeeId()
     {
         return employeeId;

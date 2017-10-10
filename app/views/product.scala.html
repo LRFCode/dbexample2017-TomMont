@@ -1,0 +1,13 @@
+@(products : List[Product])
+<!DOCTYPE html>
+<html>
+<body>
+<table>
+    @for(product <- products) {
+    <tr>
+        <td>@product.getProductName</td>
+    </tr>
+    }
+</table>
+</body>
+</html>

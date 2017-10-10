@@ -14,3 +14,8 @@ GET     /assets/*file               controllers.Assets.versioned(path="/public",
 
 GET     /employees                  controllers.EmployeeController.getEmployees
 
+GET     /products                   controllers.ProductController.getProducts
+
+GET     /employee/:id               controllers.EmployeeController.getEmployee(id:Integer)
+
+GET     /editproduct/:id                controllers.ProductController.getProduct(id:Integer)
