@@ -1,21 +1,27 @@
 package controllers;
 
+import models.Category;
 import models.Product;
+import play.data.DynamicForm;
+import play.data.FormFactory;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
 import play.mvc.Result;
 
 import javax.inject.Inject;
+import java.math.BigDecimal;
 import java.util.List;
 
 public class ProductController extends Controller
 {
     private JPAApi jpaApi;
+    private FormFactory formFactory;
 
     @Inject
-    public ProductController(JPAApi jpaApi)
+    public ProductController (FormFactory formFactory, JPAApi jpaApi)
     {
+        this.formFactory = formFactory;
         this.jpaApi = jpaApi;
     }
 
@@ -33,6 +39,32 @@ public class ProductController extends Controller
     {
         Product product =
                 jpaApi.em().createQuery("SELECT p FROM Product p WHERE productId = :id", Product.class).setParameter("id", id).getSingleResult();
-        return ok(views.html.editproduct.render(product));
+
+        List<Category> categories =
+                jpaApi.em().createQuery("SELECT c FROM Category c ORDER BY categoryName", Category.class).getResultList();
+
+        return ok(views.html.editproduct.render(product, categories));
+    }
+
+    @Transactional
+    public Result updateProduct(Integer id)
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String productName = form.get("productname");
+        BigDecimal unitPrice = new BigDecimal (form.get("unitprice"));
+        int unitsInStock = new Integer (form.get("unitsinstock"));
+        int unitsOnOrder = new Integer (form.get("unitsonorder"));
+
+        Product product =
+                jpaApi.em().createQuery("SELECT p FROM Product p WHERE productId = :id", Product.class).setParameter("id", id).getSingleResult();
+
+        product.setProductName(productName);
+        product.setUnitPrice(unitPrice);
+        product.setUnitsInStock(unitsInStock);
+        product.setUnitsOnOrder(unitsOnOrder);
+
+        jpaApi.em().persist(product);
+
+        return redirect(routes.ProductController.getProducts());
     }
 }

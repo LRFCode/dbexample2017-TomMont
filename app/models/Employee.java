@@ -30,6 +30,24 @@ public class Employee
         return TitleOfCourtesy;
     }
 
+    @Column(name = "ReportsTo")
+    private Integer reportTo;
+
+    public String getFullName()
+    {
+        return lastName + ", " + firstName;
+    }
+
+    public Integer getReportTo()
+    {
+        return reportTo;
+    }
+
+    public void setReportTo(Integer reportTo)
+    {
+        this.reportTo = reportTo;
+    }
+
     public void setTitleOfCourtesy(String titleOfCourtesy)
     {
         this.TitleOfCourtesy = titleOfCourtesy;

@@ -26,6 +26,20 @@ public class Product
     @Column(name = "UnitsInStock")
     private int unitsInStock;
 
+    @Column(name = "CategoryId")
+    int categoryId;
+
+    public int getCategoryId()
+    {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId)
+    {
+        this.categoryId = categoryId;
+    }
+
+
     public BigDecimal getUnitPrice()
     {
         return unitPrice;

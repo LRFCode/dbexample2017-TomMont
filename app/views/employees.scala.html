@@ -6,7 +6,7 @@
     @for(employee <- employees) {
     <tr>
         <td>@employee.getTitleOfCourtesy</td>
-        <td>@employee.getFirstName</td>
+        <td><a href="/employee/@employee.getEmployeeId">@employee.getFirstName</a></td>
         <td>@employee.getLastName</td>
         <td>@employee.getTitle</td>
     </tr>

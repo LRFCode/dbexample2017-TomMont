@@ -16,6 +16,11 @@ GET     /employees                  controllers.EmployeeController.getEmployees
 
 GET     /products                   controllers.ProductController.getProducts
 
+POST    /product/:id                controllers.ProductController.updateProduct(id:Integer)
+
 GET     /employee/:id               controllers.EmployeeController.getEmployee(id:Integer)
 
-GET     /editproduct/:id                controllers.ProductController.getProduct(id:Integer)
+POST     /employee/:id               controllers.EmployeeController.updateEmployee(id:Integer)
+
+
+GET     /product/:id               controllers.ProductController.getProduct(id:Integer)

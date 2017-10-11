@@ -1,6 +1,8 @@
 package controllers;
 
 import models.Employee;
+import play.data.DynamicForm;
+import play.data.FormFactory;
 import play.db.jpa.JPAApi;
 import play.db.jpa.Transactional;
 import play.mvc.Controller;
@@ -11,11 +13,13 @@ import java.util.List;
 
 public class EmployeeController extends Controller
 {
+    private FormFactory formFactory;
     private JPAApi jpaApi;
 
     @Inject
-    public EmployeeController(JPAApi jpaApi)
+    public EmployeeController(FormFactory formFactory, JPAApi jpaApi)
     {
+        this.formFactory = formFactory;
         this.jpaApi = jpaApi;
     }
 
@@ -33,6 +37,34 @@ public class EmployeeController extends Controller
     {
         Employee employee =
                 jpaApi.em().createQuery("SELECT e FROM Employee e WHERE employeeId = :id", Employee.class).setParameter("id", id).getSingleResult();
-        return ok(views.html.employee.render(employee));
+        List<Employee> employees =
+                jpaApi.em().createQuery("SELECT e FROM Employee e ORDER BY lastName, firstName", Employee.class).getResultList();
+        return ok(views.html.employee.render(employee, employees));
+    }
+
+    @Transactional
+    public Result updateEmployee(Integer id)
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String firstName = form.get("firstname");
+        String lastName = form.get("lastname");
+        String title = form.get("title");
+        String titleOfCourtesy = form.get("titleofcourtesy");
+        Integer reportsTo = new Integer(form.get("reportsto"));
+
+        Employee employee =
+                jpaApi.em().createQuery("SELECT e FROM Employee e WHERE employeeId = :id", Employee.class).setParameter("id", id).getSingleResult();
+
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        employee.setTitle(title);
+        employee.setTitleOfCourtesy(titleOfCourtesy);
+        employee.setReportTo(reportsTo);
+
+
+        jpaApi.em().persist(employee);
+
+        return redirect(routes.EmployeeController.getEmployees());
+
     }
 }
