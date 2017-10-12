@@ -1,0 +1,29 @@
+@(employee : Employee, employees : List[Employee])
+<!DOCTYPE html>
+<html>
+<body>
+<form method="POST">
+    <label>Title of Courtesy</label>
+    <input type="text" name="titleofcourtesy" id="titleofcourtesy" value="@employee.getTitleOfCourtesy"><br />
+    <label>First Name</label>
+    <input type="text" name="lastname" id="lastname" value="@employee.getLastName"><br />
+    <label>Last Name</label>
+    <input type="text" name="firstname" id="firstname" value="@employee.getFirstName"><br />
+    <label>Title</label>
+    <input type="text" name="title" id="title" value="@employee.getTitle">
+    <br/>
+    <select name="reportsto" id="reportsto">
+        @for(reportsToEmployee <- employees) {
+        @if(employee.getReportTo == reportsToEmployee.getEmployeeId){
+        <option selected value="@reportsToEmployee.getEmployeeId">@reportsToEmployee.getFullName</option>
+        }else{
+        <option value="@reportsToEmployee.getEmployeeId">@reportsToEmployee.getFullName</option>
+        }
+        }
+    </select>
+    <br />
+    <button type="submit">Save</button>
+</form>
+</body>
+</html>
+

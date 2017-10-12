@@ -19,7 +19,7 @@ public class ProductController extends Controller
     private FormFactory formFactory;
 
     @Inject
-    public ProductController (FormFactory formFactory, JPAApi jpaApi)
+    public ProductController(FormFactory formFactory, JPAApi jpaApi)
     {
         this.formFactory = formFactory;
         this.jpaApi = jpaApi;
@@ -40,7 +40,7 @@ public class ProductController extends Controller
         DynamicForm form = formFactory.form().bindFromRequest();
         String productName = form.get("productname");
 
-        if(productName == null)
+        if (productName == null)
         {
             productName = "";
         }
@@ -71,9 +71,9 @@ public class ProductController extends Controller
     {
         DynamicForm form = formFactory.form().bindFromRequest();
         String productName = form.get("productname");
-        BigDecimal unitPrice = new BigDecimal (form.get("unitprice"));
-        int unitsInStock = new Integer (form.get("unitsinstock"));
-        int unitsOnOrder = new Integer (form.get("unitsonorder"));
+        BigDecimal unitPrice = new BigDecimal(form.get("unitprice"));
+        int unitsInStock = new Integer(form.get("unitsinstock"));
+        int unitsOnOrder = new Integer(form.get("unitsonorder"));
 
         Product product =
                 jpaApi.em().createQuery("SELECT p FROM Product p WHERE productId = :id", Product.class).setParameter("id", id).getSingleResult();
@@ -86,5 +86,38 @@ public class ProductController extends Controller
         jpaApi.em().persist(product);
 
         return redirect(routes.ProductController.getProducts());
+    }
+
+    @Transactional
+    public Result addProduct()
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String productName = form.get("productname");
+        BigDecimal unitPrice = new BigDecimal(form.get("unitprice"));
+        int unitsInStock = new Integer(form.get("unitsinstock"));
+        int unitsOnOrder = new Integer(form.get("unitsonorder"));
+        int categoryId = new Integer(form.get("categoryId"));
+
+        Product product = new Product();
+
+        product.setProductName(productName);
+        product.setUnitPrice(unitPrice);
+        product.setUnitsInStock(unitsInStock);
+        product.setUnitsOnOrder(unitsOnOrder);
+        product.setCategoryId(categoryId);
+
+        jpaApi.em().persist(product);
+
+        return redirect(routes.ProductController.getProducts());
+    }
+
+    @Transactional(readOnly = true)
+    public Result newProduct()
+    {
+        Product product = new Product();
+        List<Category> categories =
+                jpaApi.em().createQuery("SELECT c FROM Category c ORDER BY categoryName", Category.class).getResultList();
+
+        return ok(views.html.editproduct.render(product, categories));
     }
 }

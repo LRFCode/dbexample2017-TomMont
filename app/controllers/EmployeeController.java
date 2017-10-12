@@ -86,5 +86,41 @@ public class EmployeeController extends Controller
 
     }
 
+    @Transactional
+    public Result addEmployee()
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String firstName = form.get("firstname");
+        String lastName = form.get("lastname");
+        String title = form.get("title");
+        String titleOfCourtesy = form.get("titleofcourtesy");
+        Integer reportsTo = new Integer(form.get("reportsto"));
+
+        Employee employee = new Employee();
+
+        employee.setFirstName(firstName);
+        employee.setLastName(lastName);
+        employee.setTitle(title);
+        employee.setTitleOfCourtesy(titleOfCourtesy);
+        employee.setReportTo(reportsTo);
+
+
+        jpaApi.em().persist(employee);
+
+        return redirect(routes.EmployeeController.getEmployees());
+
+    }
+
+    @Transactional(readOnly = true)
+    public Result newEmployee()
+    {
+        Employee employee = new Employee();
+        employee.setTitle("Junior Developer");
+        List<Employee> employees =
+                jpaApi.em().createQuery("SELECT e FROM Employee e ORDER BY lastName, firstName", Employee.class).getResultList();
+        return ok(views.html.employeeadd.render(employee, employees));
+    }
+
+
 
 }

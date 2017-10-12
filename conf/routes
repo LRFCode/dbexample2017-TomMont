@@ -24,6 +24,14 @@ POST     /employee/:id               controllers.EmployeeController.updateEmploy
 
 GET     /employeesearch            controllers.EmployeeController.employeeSearch
 
+POST    /employeeadd                controllers.EmployeeController.addEmployee
+
+POST    /productadd                 controllers.ProductController.addProduct
+
+GET     /employeeadd                controllers.EmployeeController.newEmployee
+
+GET     /productadd                 controllers.ProductController.newProduct
+
 
 GET     /product/:id               controllers.ProductController.getProduct(id:Integer)
 
