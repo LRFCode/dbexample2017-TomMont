@@ -33,6 +33,24 @@ public class EmployeeController extends Controller
     }
 
     @Transactional(readOnly = true)
+    public Result employeeSearch()
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String lastName = form.get("lastname");
+
+        if(lastName == null)
+        {
+            lastName = "";
+        }
+        List<Employee> employees =
+                jpaApi.em().createQuery("SELECT e FROM Employee e WHERE lastname LIKE :lastname ORDER BY lastName, firstName", Employee.class).
+                        setParameter("lastname", "%" +lastName + "%").
+                        getResultList();
+
+        return ok(views.html.employeesearch.render(employees));
+    }
+
+    @Transactional(readOnly = true)
     public Result getEmployee(Integer id)
     {
         Employee employee =
@@ -67,4 +85,6 @@ public class EmployeeController extends Controller
         return redirect(routes.EmployeeController.getEmployees());
 
     }
+
+
 }

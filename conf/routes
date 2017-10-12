@@ -22,5 +22,9 @@ GET     /employee/:id               controllers.EmployeeController.getEmployee(i
 
 POST     /employee/:id               controllers.EmployeeController.updateEmployee(id:Integer)
 
+GET     /employeesearch            controllers.EmployeeController.employeeSearch
+
 
 GET     /product/:id               controllers.ProductController.getProduct(id:Integer)
+
+GET     /productsearch              controllers.ProductController.searchProducts

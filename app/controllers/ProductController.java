@@ -35,6 +35,26 @@ public class ProductController extends Controller
     }
 
     @Transactional(readOnly = true)
+    public Result searchProducts()
+    {
+        DynamicForm form = formFactory.form().bindFromRequest();
+        String productName = form.get("productname");
+
+        if(productName == null)
+        {
+            productName = "";
+        }
+
+        List<Product> products =
+                jpaApi.em().createQuery("SELECT p FROM Product p WHERE productname LIKE :productname ORDER BY productName", Product.class).
+                        setParameter("productname", "%" + productName + "%").
+                        getResultList();
+
+        return ok(views.html.productsearch.render(products));
+    }
+
+
+    @Transactional(readOnly = true)
     public Result getProduct(Integer id)
     {
         Product product =

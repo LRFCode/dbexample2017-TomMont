@@ -1,0 +1,19 @@
+@(products : List[Product])
+<!DOCTYPE html>
+<html>
+<body>
+<h1>Product Search</h1>
+<form method="GET">
+    <label>Product Name:</label><input type="text" name="productname" id="productname">
+    <button type="submit">Search</button>
+</form>
+<br/>
+<table>
+    @for(product <- products) {
+    <tr>
+        <td>@product.getProductName</td>
+    </tr>
+    }
+</table>
+</body>
+</html>
