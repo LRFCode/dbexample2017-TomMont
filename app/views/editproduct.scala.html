@@ -12,7 +12,7 @@
 <input type="text" name="unitsonorder" id="unitsonorder" value="@product.getUnitsOnOrder"><br />
 <label>Units In Stock</label>
 <input type="text" name="unitsinstock" id="unitsinstock" value="@product.getUnitsInStock"><br />
-<select>
+<select name="categoryId">
     @for(category <- categories){
     <option value="@category.getCategoryId">@category.getCategoryName</option>
     }

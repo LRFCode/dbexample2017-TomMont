@@ -94,9 +94,9 @@ public class ProductController extends Controller
         DynamicForm form = formFactory.form().bindFromRequest();
         String productName = form.get("productname");
         BigDecimal unitPrice = new BigDecimal(form.get("unitprice"));
-        int unitsInStock = new Integer(form.get("unitsinstock"));
-        int unitsOnOrder = new Integer(form.get("unitsonorder"));
-        int categoryId = new Integer(form.get("categoryId"));
+        Integer unitsInStock = new Integer(form.get("unitsinstock"));
+        Integer unitsOnOrder = new Integer(form.get("unitsonorder"));
+        Integer categoryId = new Integer(form.get("categoryId"));
 
         Product product = new Product();
 
@@ -118,6 +118,6 @@ public class ProductController extends Controller
         List<Category> categories =
                 jpaApi.em().createQuery("SELECT c FROM Category c ORDER BY categoryName", Category.class).getResultList();
 
-        return ok(views.html.editproduct.render(product, categories));
+        return ok(views.html.productadd.render(product, categories));
     }
 }
