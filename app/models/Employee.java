@@ -30,6 +30,7 @@ public class Employee
         return TitleOfCourtesy;
     }
 
+
     @Column(name = "ReportsTo")
     private Integer reportTo;
 

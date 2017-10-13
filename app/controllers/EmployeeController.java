@@ -1,6 +1,7 @@
 package controllers;
 
 import models.Employee;
+import models.FullEmployee;
 import play.data.DynamicForm;
 import play.data.FormFactory;
 import play.db.jpa.JPAApi;
@@ -26,8 +27,10 @@ public class EmployeeController extends Controller
     @Transactional(readOnly = true)
     public Result getEmployees()
     {
-        List<Employee> employees =
-                jpaApi.em().createQuery("SELECT e FROM Employee e ORDER BY lastName, firstName", Employee.class).getResultList();
+        List<FullEmployee> employees =
+                jpaApi.em().createQuery("SELECT NEW FullEmployee (e.employeeId, e.titleOfCourtesy, e.firstName, e.lastName, e.title, m.lastName, e.salary) " +
+                        "FROM Employee e " +
+                        "LEFT OUTER JOIN Employee m ON e.reportsTo = m.employeeId", FullEmployee.class).getResultList();
 
         return ok(views.html.employees.render(employees));
     }
