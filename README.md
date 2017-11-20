@@ -1,1 +1,1 @@
-Practice with Northwest Passage database using HeidiSQL and Playframework.
+Practice with database using HeidiSQL and Playframework.
